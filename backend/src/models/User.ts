@@ -1,18 +1,16 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional } from "sequelize";
 import { sequelize } from "../config/db";
 
-
-class User extends Model{
-    public id!: number
-    public username!: string
-    public password!: string
+interface UserAttributes extends Model<InferAttributes<UserAttributes>,InferCreationAttributes<UserAttributes>> {
+    id: CreationOptional<number>
+    username: string
+    password: string
 }
 
-User.init({
+const User = sequelize.define<UserAttributes>('user',{
     id :{type:DataTypes.INTEGER, autoIncrement:true, primaryKey:true},
     username:{type:DataTypes.STRING, unique:true, allowNull:false},
     password:{type:DataTypes.STRING,allowNull:false},
+})
 
-},{sequelize, modelName: "user"})
-
-export default User
+export { User }
